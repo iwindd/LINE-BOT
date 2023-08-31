@@ -1,4 +1,4 @@
-import { Dashboard, People } from "@mui/icons-material"
+import { Dashboard, People, Room } from "@mui/icons-material"
 
 interface DrawerItem{
     name: string,
@@ -24,6 +24,11 @@ export const DrawerItems : DrawerCategory[] = [
                 name: "users",
                 route: "/users",
                 icon: <People/>
+            },
+            {
+                name: "rooms",
+                route: "/rooms",
+                icon: <Room/>
             }
         ]
     }

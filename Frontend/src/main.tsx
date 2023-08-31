@@ -1,16 +1,19 @@
+import './index.css';
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
-import SignIn from './pages/auth/signin';
-import Dashboard from './pages/dashboard';
-import './index.css';
+
+import CssBaseline from '@mui/material/CssBaseline';
+import Navbar from './layouts/navbar';
+import i18n from './i18n';
 
 import { I18nextProvider } from 'react-i18next';
-import i18n from './i18n';
-import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from './components/Theme';
-import Navbar from './layouts/navbar';
+
+import SignIn from './pages/auth/signin';
+import Dashboard from './pages/dashboard';
+import Error from './pages/error';
 
 function OutletNavbar() {
     return (
@@ -30,6 +33,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <Route path='/' element={<OutletNavbar />}>
                             <Route index element={<Dashboard />} />
                             <Route path='/users' element={<Dashboard />} />
+
+                            <Route path='/*' element={<Error />}></Route>
                         </Route>
 
                         <Route path='/signin' element={<SignIn />}></Route>

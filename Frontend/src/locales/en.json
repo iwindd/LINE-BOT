@@ -6,5 +6,6 @@
 
     "drawer.main": "Menu",
     "drawer.main.dashboard": "Dashboard",
-    "drawer.main.users": "Users"
+    "drawer.main.users": "Users",
+    "drawer.main.rooms": "Rooms"
 }
