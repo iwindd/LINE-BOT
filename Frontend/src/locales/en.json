@@ -1,0 +1,6 @@
+{
+    "field.username": "Username",
+    "field.password": "Password",
+    "auth.signin.header": "Sign in",
+    "auth.signin.button.login": "Login"
+}

@@ -1,8 +1,30 @@
 import React from 'react'
+import { FormControl, TextField, Button, Container, Typography, Divider } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 function SignIn() {
+    const { t } = useTranslation();
+
     return (
-        <div>SignIn</div>
+        <Container maxWidth="xs" className="mx-auto mt-10">
+            <FormControl className='space-y-4' fullWidth>
+                <header>
+                    <Typography
+                        variant='h2'
+                        className='text-center'
+                        marginBottom={2}
+                    >
+                        {t('auth.signin.header')}
+                    </Typography>
+                    <Divider></Divider>
+                </header>
+                <TextField label="Username" variant="outlined" fullWidth />
+                <TextField label="Password" type="password" variant="outlined" fullWidth />
+                <Button variant="contained" color="primary" fullWidth>
+                    Login
+                </Button>
+            </FormControl>
+        </Container>
     )
 }
 
