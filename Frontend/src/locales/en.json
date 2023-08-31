@@ -2,5 +2,9 @@
     "field.username": "Username",
     "field.password": "Password",
     "auth.signin.header": "Sign in",
-    "auth.signin.button.login": "Login"
+    "auth.signin.button.login": "Login",
+
+    "drawer.main": "Menu",
+    "drawer.main.dashboard": "Dashboard",
+    "drawer.main.users": "Users"
 }

@@ -23,6 +23,22 @@ export const theme = createTheme({
                     display: none;
                 }
             `,
-        }
+        },
+        MuiAppBar: {
+            styleOverrides: {
+                root: {
+                    boxShadow: 'none',
+                    backgroundColor: '#ffffff',
+                    borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
+                }
+            }
+        },
+        MuiToolbar: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#ffffff'
+                }, 
+            },
+        },
     },
 });
