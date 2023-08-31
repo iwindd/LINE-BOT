@@ -1,4 +1,3 @@
-import React from 'react'
 import { FormControl, TextField, Button, Container, Typography, Divider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -18,10 +17,10 @@ function SignIn() {
                     </Typography>
                     <Divider></Divider>
                 </header>
-                <TextField label="Username" variant="outlined" fullWidth />
-                <TextField label="Password" type="password" variant="outlined" fullWidth />
+                <TextField label={t('field.username')} variant="outlined" fullWidth />
+                <TextField label={t('field.password')} type="password" variant="outlined" fullWidth />
                 <Button variant="contained" color="primary" fullWidth>
-                    Login
+                    {t('auth.signin.button.login')}
                 </Button>
             </FormControl>
         </Container>
