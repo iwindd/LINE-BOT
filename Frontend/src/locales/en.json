@@ -7,5 +7,9 @@
     "drawer.main": "Menu",
     "drawer.main.dashboard": "Dashboard",
     "drawer.main.users": "Users",
-    "drawer.main.rooms": "Rooms"
+    "drawer.main.rooms": "Rooms",
+
+    "drawer.config": "Configuration",
+    "drawer.config.reply": "Reply",
+    "drawer.config.synthia": "Synthia" 
 }

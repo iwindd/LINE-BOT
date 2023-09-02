@@ -11,9 +11,14 @@ import { I18nextProvider } from 'react-i18next';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from './components/Theme';
 
-import SignIn from './pages/auth/signin';
-import Dashboard from './pages/dashboard';
+/* ETC */
 import Error from './pages/error';
+/* AUTH */
+import SignIn from './pages/auth/signin';
+/* MENU */
+import Dashboard from './pages/dashboard';
+/* CONFIG */
+import Reply from './pages/reply';
 
 function OutletNavbar() {
     return (
@@ -33,7 +38,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <Route path='/' element={<OutletNavbar />}>
                             <Route index element={<Dashboard />} />
                             <Route path='/users' element={<Dashboard />} />
-
+                            <Route path='/reply' element={<Reply />} />
                             <Route path='/*' element={<Error />}></Route>
                         </Route>
 

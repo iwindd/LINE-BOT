@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, Box, Toolbar, IconButton, Typography, List, ListItemButton, ListItemText, ListItemIcon, ListSubheader, Container } from '@mui/material'
+import { Drawer, Box, Toolbar, IconButton, Typography, List, ListItemButton, ListItemText, ListItemIcon, ListSubheader } from '@mui/material'
 import { useTranslation } from 'react-i18next';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { AppBar } from '../components/3rd-party/navbar';
@@ -68,7 +68,7 @@ function Navbar({children} : {children : React.ReactNode}) {
                     })}
                 </List>
             </Drawer>
-            <Container
+            <Box
                 sx={{
                     marginTop: 11,
                     marginLeft: isDrawer ? 30: 1,
@@ -76,7 +76,7 @@ function Navbar({children} : {children : React.ReactNode}) {
                 }}
             >
                 {children}
-            </Container>
+            </Box>
         </>
     )
 }
