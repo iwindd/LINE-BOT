@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb'
 import env from './dotenv';
 
-const url = `mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`;
+const url: string = `mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`;
 
 async function connectToMongoDB() {
     try {
