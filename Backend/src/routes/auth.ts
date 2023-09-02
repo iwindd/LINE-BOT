@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express';
 import User, { IUser } from '../models/UserModel';
+import auth from '../middlewares/auth';
+import guest from '../middlewares/guest';
 
 const router = express.Router();
 
-router.post('/register', async (req: Request, res: Response) => {
+router.post('/register', guest, async (req: Request, res: Response) => {
     try {
         const { username, email, password } = req.body
 
@@ -16,7 +18,7 @@ router.post('/register', async (req: Request, res: Response) => {
     }
 })
 
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', guest, async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body
 
@@ -30,7 +32,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 })
 
-router.get('/logout', async (req : Request, res : Response) => {
+router.get('/logout', auth, async (req : Request, res : Response) => {
     try {
         req.session.destroy(() => res.sendStatus(200))
     } catch (error) {
