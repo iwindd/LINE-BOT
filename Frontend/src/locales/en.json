@@ -1,4 +1,5 @@
 {
+    "field.email": "Email",
     "field.username": "Username",
     "field.password": "Password",
     "auth.signin.header": "Sign in",

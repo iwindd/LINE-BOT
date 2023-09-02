@@ -1,4 +1,5 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import { Drawer, Box, Toolbar, IconButton, Typography, List, ListItemButton, ListItemText, ListItemIcon, ListSubheader } from '@mui/material'
 import { useTranslation } from 'react-i18next';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
@@ -6,7 +7,15 @@ import { AppBar } from '../components/3rd-party/navbar';
 import { DrawerItems } from '../components/config/navbar';
 import { useNavigate } from 'react-router-dom';
 
-function Navbar({children} : {children : React.ReactNode}) {
+export const OutletNavbar = () => {
+    return (
+        <Navbar>
+            <Outlet />
+        </Navbar>
+    );
+}
+
+export default function Navbar({ children }: { children: React.ReactNode }) {
     const [isDrawer, setDrawer] = React.useState<boolean>(true);
     const [isPage, setPage] = React.useState<string>('main.dashboard');
     const navigate = useNavigate();
@@ -71,7 +80,7 @@ function Navbar({children} : {children : React.ReactNode}) {
             <Box
                 sx={{
                     marginTop: 11,
-                    marginLeft: isDrawer ? 30: 1,
+                    marginLeft: isDrawer ? 30 : 1,
                     transition: "all 0.25s ease"
                 }}
             >
@@ -80,5 +89,3 @@ function Navbar({children} : {children : React.ReactNode}) {
         </>
     )
 }
-
-export default Navbar

@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 import express from 'express';
 import env from './components/dotenv';
 import cors from 'cors';
+import bodyParser from 'body-parser';
+import session from './components/session';
 
 /* ROUTE */
 import Auth from './routes/auth';
-import bodyParser from 'body-parser';
-import session from './components/session';
 
 const app = express();
 mongoose.connect(`mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`);
