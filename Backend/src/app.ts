@@ -1,15 +1,22 @@
+import mongoose from 'mongoose';
 import express from 'express';
-import connect from './components/mongo';
 import env from './components/dotenv';
+import cors from 'cors';
 
 /* ROUTE */
 import Auth from './routes/auth';
+import bodyParser from 'body-parser';
 
-const app       = express();
-app.locals.conn = connect();
+const app = express();
+mongoose.connect(`mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`);
 
-app.use(express.json());
+app.use(cors())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+
+/* ROUTE */
+app.get('/', (req, res) => res.send("Hello Synthia"))
 app.use('/auth', Auth)
 
-app.get('/', (req, res) => res.send("Hello Synthia"))
+/* RUN */
 app.listen(env.SERVER_PORT || 3000, () => console.log(`Server is running`))
