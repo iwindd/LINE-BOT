@@ -6,6 +6,7 @@ import cors from 'cors';
 /* ROUTE */
 import Auth from './routes/auth';
 import bodyParser from 'body-parser';
+import session from './components/session';
 
 const app = express();
 mongoose.connect(`mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`);
@@ -13,6 +14,7 @@ mongoose.connect(`mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`
 app.use(cors())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+app.use(session)
 
 /* ROUTE */
 app.get('/', (req, res) => res.send("Hello Synthia"))
