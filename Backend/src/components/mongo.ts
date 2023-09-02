@@ -1,5 +1,7 @@
 import { MongoClient } from 'mongodb'
-const url = 'mongodb://127.0.0.1:27017/synthia';
+import env from './dotenv';
+
+const url = `mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`;
 
 async function connectToMongoDB() {
     try {
