@@ -16,7 +16,7 @@ function Config() {
     const [isConfirmation, setConfirmation] = React.useState<boolean>(false);
 
     const { isLoading, data } = useQuery('channel_secret', async () => {
-        return await axios.get('/app/get', {
+        return await axios.get('/app/config/get', {
             params: {
                 key: [
                     "channel_secret",
@@ -32,7 +32,7 @@ function Config() {
     })
 
     const { mutate, isLoading: isMutate } = useMutation(async () => {
-        return await axios.post('/app/set', {
+        return await axios.post('/app/config/set', {
             value : [
                 {key: "channel_secret", value: channel_secret},
                 {key: "channel_access_token", value: channel_access_token}
