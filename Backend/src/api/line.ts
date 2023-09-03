@@ -6,6 +6,10 @@ import { ConfigReturn } from '../typings/config';
 
 const apps: App[] = [];
 
+export const isRunning = (id: string) => {
+    return apps.find(app => app.id == id) ? true : false
+}
+
 export const ensure = async (id: string): Promise<[boolean, number]> => {
     if (apps.find(app => app.id == id)) return [false, 1]
 

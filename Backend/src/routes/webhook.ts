@@ -1,10 +1,13 @@
 import express, { Request, Response } from 'express'
-import { onEvent } from '../api/line';
+import { onEvent, isRunning } from '../api/line';
 import { WebhookEvent } from '@line/bot-sdk'
 
 const Route = express.Router();
 
-Route.post("/line", async (req: Request, res: Response) => {
+Route.post("/line/:id", async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    if (!isRunning(id)) return res.status(500).end();
 
     try {
         const events = req.body.events;
