@@ -1,6 +1,6 @@
 import AppModel, { IApp } from '../models/AppModel';
 import { LoadConfig } from '../controllers/ConfigController';
-import { Client } from '@line/bot-sdk'
+import { Client, WebhookEvent, TextMessage } from '@line/bot-sdk'
 import { App } from '../typings/app';
 import { ConfigReturn } from '../typings/config';
 
@@ -31,4 +31,18 @@ export const ensure = async (id: string): Promise<[boolean, number]> => {
     })
 
     return [true, 200]
+}
+
+export const onEvent = (event: WebhookEvent) => {
+    switch (event.type) {
+        case "message":
+            if (event.message.type != "text") return console.error(`NOT SUPPORT MESSAGE TYPE : ${event.message.type}`);
+            const message: TextMessage = event.message
+
+            console.log(`MESSAGE >> ${message.text}`);
+            break;
+        default:
+            console.error(`NOT SUPPORT : ${event.type}`);
+            break
+    }
 }

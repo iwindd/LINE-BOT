@@ -1,9 +1,25 @@
-import express, {Request, Response} from 'express'
+import express, { Request, Response } from 'express'
+import { onEvent } from '../api/line';
+import { WebhookEvent } from '@line/bot-sdk'
 
 const Route = express.Router();
 
-Route.post("/line", (req : Request, res : Response) => {
-    console.log("WEBHOOK >>");
+Route.post("/line", async (req: Request, res: Response) => {
+
+    try {
+        const events = req.body.events;
+
+        return events.length > 0 ? (
+            await (events.map((event: WebhookEvent) => {
+                onEvent(event)
+            }))
+        ) : (
+            res.sendStatus(200)
+        )
+    } catch (e) {
+        console.log("ERROR => ", e);
+        res.status(500).end()
+    }
 })
 
 export default Route
