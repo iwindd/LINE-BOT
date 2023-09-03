@@ -1,6 +1,12 @@
 {
     "confirmation.confirm": "Confirm",
     "confirmation.cancel": "Cancel",
+
+    "text.add": "Add",
+    "text.edit": "Edit",
+    "text.delete": "Delete",
+    "text.cancel": "Cancel",
+    "text.save": "Save",
     
     "field.email": "Email",
     "field.username": "Username",

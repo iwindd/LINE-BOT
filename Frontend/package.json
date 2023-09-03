@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/sarabun": "^5.0.11",
     "@mui/icons-material": "^5.14.7",
+    "@mui/lab": "^5.0.0-alpha.142",
     "@mui/material": "^5.14.7",
     "@mui/x-data-grid": "^6.12.1",
     "@types/axios": "^0.14.0",

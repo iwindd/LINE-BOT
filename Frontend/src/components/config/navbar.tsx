@@ -42,7 +42,7 @@ export const DrawerItems : DrawerCategory[] = [
             },
             {
                 name: "synthia",
-                route: "/",
+                route: "/synthia",
                 icon: <Settings/>
             }
         ]
