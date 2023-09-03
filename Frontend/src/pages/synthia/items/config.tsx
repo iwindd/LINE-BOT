@@ -10,27 +10,41 @@ import axios from '../../../components/Axios';
 function Config() {
     const { t } = useTranslation();
 
-    const [value, setValue] = React.useState<string>("");
+    const [channel_secret, setChannelSecret] = React.useState<string>("");
+    const [channel_access_token, setChannelAccessToken] = React.useState<string>("");
     const [isEdit, setEdit] = React.useState<boolean>(false);
     const [isConfirmation, setConfirmation] = React.useState<boolean>(false);
 
-    const {isLoading, data} = useQuery('channel_secret', async () => {
-        await axios.get('/app/get', {
+    const { isLoading, data } = useQuery('channel_secret', async () => {
+        return await axios.get('/app/get', {
             params: {
-                key: "channel_secret"
+                key: [
+                    "channel_secret",
+                    "channel_access_token"
+                ]
             }
         })
-    }, {retry: 0})
+    }, { 
+        retry: 0,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false
+    })
 
-    const {mutate, isLoading : isMutate} = useMutation(async () => {
-        await axios.post('/app/set', {
-            key: "channel_secret",
-            value: value
+    const { mutate, isLoading: isMutate } = useMutation(async () => {
+        return await axios.post('/app/set', {
+            value : [
+                {key: "channel_secret", value: channel_secret},
+                {key: "channel_access_token", value: channel_access_token}
+            ]
         })
     })
 
     React.useEffect(() => {
-       console.log(data);
+        if (data?.data){
+            setChannelSecret(data.data.find((data : {key: string}) => data.key == "channel_secret").value || "")
+            setChannelAccessToken(data.data.find((data : {key: string}) => data.key == "channel_access_token").value || "")
+        }
     }, [data])
 
     return (
@@ -49,8 +63,20 @@ function Config() {
                     placeholder={t("line.channel_secret")}
                     label={t("line.channel_secret")}
                     type='password'
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
+                    value={channel_secret}
+                    onChange={(e) => setChannelSecret(e.target.value)} 
+                    disabled={!isEdit || isLoading || isMutate}
+                    focused={!isEdit}
+                />
+
+                <TextField
+                    fullWidth
+                    margin={'normal'}
+                    placeholder={t("line.channel_access_token")}
+                    label={t("line.channel_access_token")}
+                    type='password'
+                    value={channel_access_token}
+                    onChange={(e) => setChannelAccessToken(e.target.value)} 
                     disabled={!isEdit || isLoading || isMutate}
                     focused={!isEdit}
                 />
