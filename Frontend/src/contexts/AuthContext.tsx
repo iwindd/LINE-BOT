@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { QueryFunction, UseMutateFunction, useMutation, useQuery } from 'react-query';
-import axios from '../components/Axios';
 import { AxiosResponse } from 'axios';
+import axios from '../components/Axios';
 
 const AuthContext = React.createContext<AuthContext | null>(null);
 
@@ -34,13 +34,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     const { refetch, data, isLoading : isLoadingUserData } = useQuery("LoadUserData", async () => {
         return await axios.get("/auth/user")
-    })
+    }, {retry: 0})
 
     const { mutate: Register, isLoading: isRegister } = useMutation(async ({ email, username, password }: User) => {
         return await axios.put("/auth/register", { email, username, password })
     })
 
-    const { mutate: Login, isLoading: isLogin } = useMutation(async ({ email, password }: { email : string, password: string}) => {
+    const { mutate: Login, data : LoginData, isLoading: isLogin } = useMutation(async ({ email, password }: { email : string, password: string}) => {
         return await axios.post("/auth/login", { email, password })
     })
 
@@ -52,10 +52,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })
 
     useEffect(() => {
+        if (LoginData?.status == 200) {
+            refetch()
+        }
+    }, [LoginData])
+
+    useEffect(() => {
         if (data?.data) {
             const { email, username, _id } = data.data as Auth
             setAuth({ email, username, _id })
             setLogin(true)
+        }else{
+            setAuth(null)
+            setLogin(false)
         }
     }, [data])
 
