@@ -6,7 +6,7 @@ const initialize: { [key: string]: any } = {
     ['channel_secret']: null
 }
 
-export const LoadConfig = async (synthia: string, key: ConfigKey | ConfigKey[]) => {
+export const LoadConfig = async (synthia: string, key: ConfigKey | ConfigKey[]) : Promise<ConfigReturn | ConfigReturn[]> => {
     const getValue = async (key: ConfigKey) => {
         const config = await Config.findOne({
             userId: synthia,

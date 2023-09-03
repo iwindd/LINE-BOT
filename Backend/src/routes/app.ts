@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import { LoadConfig, SetConfig } from '../controllers/ConfigController';
 import { ConfigKey, ConfigReturn } from '../typings/config';
+import ensure from '../api/main';
 const Route = express.Router()
 
 Route.post("/config/set", async (req: Request, res: Response) => {
@@ -16,5 +17,18 @@ Route.get("/config/get", async (req: Request, res: Response) => {
     const config = await LoadConfig(req.session.auth, req.query.key as ConfigKey | ConfigKey[])
     res.send(config).status(200);
 });
+
+Route.post("/start", async (req: Request, res: Response) => {
+    if (!req.session.auth) return res.sendStatus(403);
+
+    const [status, code] = await ensure("LINE", req.session.auth)
+    if (!status) {
+        console.log('error', code);
+        
+        res.sendStatus(400).json({code})
+    }
+
+    res.sendStatus(200)
+})
 
 export default Route
