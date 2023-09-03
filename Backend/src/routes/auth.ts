@@ -12,14 +12,9 @@ router.post('/login', guest, async (req: Request, res: Response) => {
         const user: IUser | null = await User.findOne({ email, password })
         if (!user) return res.sendStatus(401);
 
-        req.session.auth = user
+        req.session.auth = user._id
         res.json({
-            auth: {
-                ...user,
-                ...{
-                    password: undefined
-                }
-            }
+            auth: req.session.auth
         });
     } catch (error) {
         res.sendStatus(500).json({ error })
@@ -35,8 +30,17 @@ router.get('/logout', auth, async (req: Request, res: Response) => {
 })
 
 router.get('/user', auth, async (req: Request, res: Response) => {
-    const auth = req.session.auth;
-    res.json({ auth })
+    try {
+        const auth = req.session.auth
+        const user: IUser | null = await User.findById(auth)
+        if (!user) return res.sendStatus(401);
+
+        res.json({
+            auth: user
+        });
+    } catch (error) {
+        res.sendStatus(500).json({ error })
+    }
 })
 
 export default router;

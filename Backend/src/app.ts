@@ -9,6 +9,11 @@ import cors from './components/cors';
 
 /* ROUTE */
 import Auth from './routes/auth';
+import App from './routes/app';
+
+/* MIDDLEWARE */
+
+import AuthMiddleware from './middlewares/auth';
 
 const app = express();
 mongoose.connect(`mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`);
@@ -21,6 +26,7 @@ app.use(cors)
 /* ROUTE */
 app.get('/', (req, res) => res.send("Hello Synthia"))
 app.use('/auth', Auth)
+app.use('/app', AuthMiddleware, App)
 
 /* RUN */
 app.listen(env.SERVER_PORT || 3000, () => console.log(`Server is running`))
