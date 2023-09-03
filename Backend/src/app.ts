@@ -11,7 +11,11 @@ import Auth from './routes/auth';
 const app = express();
 mongoose.connect(`mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`);
 
-app.use(cors())
+app.use(cors({ 
+    credentials: true, 
+    origin: 'http://localhost:5173' 
+}))
+
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(session)

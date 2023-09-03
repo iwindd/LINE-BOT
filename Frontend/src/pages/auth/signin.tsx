@@ -1,12 +1,16 @@
 import React from 'react';
 import { FormControl, TextField, Button, Container, Typography, Divider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import useAuthContext from '../../contexts/AuthContext';
 
 function SignIn() {
     const { t } = useTranslation();
 
-    const [Email, setEmail] = React.useState<string>("");
-    const [Password, setPassword] = React.useState<string>("");
+    const [email, setEmail] = React.useState<string>("");
+    const [password, setPassword] = React.useState<string>("");
+
+    const { isLoading, methods: { Login } } = useAuthContext()
+    const Submit = () => Login({ email, password })
 
     return (
         <Container maxWidth="xs" className="mx-auto mt-10">
@@ -25,7 +29,7 @@ function SignIn() {
                 {/* EMAIL FIELD */}
                 <TextField
                     label={t('field.email')}
-                    value={Email}
+                    value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     variant="outlined"
                     fullWidth
@@ -34,14 +38,20 @@ function SignIn() {
                 {/* PASSWORD FIELD */}
                 <TextField
                     label={t('field.password')}
-                    value={Password}
+                    value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     type="password"
                     variant="outlined"
                     fullWidth
                 />
 
-                <Button variant="contained" color="primary" fullWidth>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    disabled={isLoading}
+                    onClick={() => Submit()}
+                >
                     {t('auth.signin.button.login')}
                 </Button>
             </FormControl>
