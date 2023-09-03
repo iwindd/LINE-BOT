@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 import express from 'express';
 import env from './components/dotenv';
-import cors from 'cors';
 import bodyParser from 'body-parser';
+
+/* COMPONENTS */
 import session from './components/session';
+import cors from './components/cors';
 
 /* ROUTE */
 import Auth from './routes/auth';
@@ -11,14 +13,10 @@ import Auth from './routes/auth';
 const app = express();
 mongoose.connect(`mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`);
 
-app.use(cors({ 
-    credentials: true, 
-    origin: env.FRONTEND_URL
-}))
-
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(session)
+app.use(cors)
 
 /* ROUTE */
 app.get('/', (req, res) => res.send("Hello Synthia"))
