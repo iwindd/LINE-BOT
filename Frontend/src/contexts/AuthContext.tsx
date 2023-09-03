@@ -22,7 +22,6 @@ interface AuthContext {
     isLogged: boolean,
     isLoadingUserData: boolean,
     methods: {
-        Register: UseMutateFunction<AxiosResponse<any, any>, unknown, User, unknown>,
         Login: UseMutateFunction<AxiosResponse<any, any>, unknown, { email : string, password: string}, unknown>,
         Logout: UseMutateFunction<void, unknown, void, unknown>
     }
@@ -35,10 +34,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { refetch, data, isLoading : isLoadingUserData } = useQuery("LoadUserData", async () => {
         return await axios.get("/auth/user")
     }, {retry: 0})
-
-    const { mutate: Register, isLoading: isRegister } = useMutation(async ({ email, username, password }: User) => {
-        return await axios.put("/auth/register", { email, username, password })
-    })
 
     const { mutate: Login, data : LoginData, isLoading: isLogin } = useMutation(async ({ email, password }: { email : string, password: string}) => {
         return await axios.post("/auth/login", { email, password })
@@ -75,8 +70,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 refetch,
                 isLogged,
                 isLoadingUserData,
-                isLoading: isRegister || isLogin || isLogout,
-                methods: { Register, Login, Logout }
+                isLoading: isLogin || isLogout,
+                methods: { Login, Logout }
             }}
         >
             {children}
