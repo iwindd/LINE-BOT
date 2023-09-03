@@ -10,6 +10,7 @@ import cors from './components/cors';
 /* ROUTE */
 import Auth from './routes/auth';
 import App from './routes/app';
+import Webhook from './routes/webhook';
 
 /* MIDDLEWARE */
 
@@ -26,6 +27,7 @@ app.use(cors)
 /* ROUTE */
 app.get('/', (req, res) => res.send("Hello Synthia"))
 app.use('/auth', Auth)
+app.use('/webhook', Webhook)
 app.use('/app', AuthMiddleware, App)
 
 /* RUN */
