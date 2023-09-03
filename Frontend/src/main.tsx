@@ -2,15 +2,13 @@ import './index.css';
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import i18n from './i18n';
+import i18n from './components/i18n';
 
 import { I18nextProvider } from 'react-i18next';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from './components/Theme';
 
 import App from './app';
-
-
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
