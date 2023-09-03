@@ -1,11 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { Drawer, Box, Toolbar, IconButton, Typography, List, ListItemButton, ListItemText, ListItemIcon, ListSubheader } from '@mui/material'
+import { Drawer, Box, Toolbar, IconButton, Typography, List, ListItemButton, ListItemText, ListItemIcon, ListSubheader} from '@mui/material'
 import { useTranslation } from 'react-i18next';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { AppBar } from '../components/3rd-party/navbar';
 import { DrawerItems } from '../components/config/navbar';
 import { useNavigate } from 'react-router-dom';
+import Logout from './logout';
 
 export const OutletNavbar = () => {
     return (
@@ -26,10 +27,16 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
             <AppBar position='fixed' open={isDrawer}>
                 <Toolbar
                     color="#fffff"
+                    className='flex justify-between'
                 >
-                    <IconButton onClick={() => setDrawer(!isDrawer)}>
-                        {isDrawer ? (<KeyboardArrowLeft />) : (<KeyboardArrowRight />)}
-                    </IconButton>
+                    <Box>
+                        <IconButton onClick={() => setDrawer(!isDrawer)}>
+                            {isDrawer ? (<KeyboardArrowLeft />) : (<KeyboardArrowRight />)}
+                        </IconButton>
+                    </Box>
+                    <Box>
+                        <Logout/>
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Drawer

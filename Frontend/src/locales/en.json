@@ -1,7 +1,11 @@
 {
+    "confirmation.confirm": "Confirm",
+    "confirmation.cancel": "Cancel",
+    
     "field.email": "Email",
     "field.username": "Username",
     "field.password": "Password",
+
     "auth.signin.header": "Sign in",
     "auth.signin.button.login": "Login",
 
@@ -9,6 +13,9 @@
     "drawer.main.dashboard": "Dashboard",
     "drawer.main.users": "Users",
     "drawer.main.rooms": "Rooms",
+
+    "logout.confirmation.title": "Logout?",
+    "logout.confirmation.text": "logout?",
 
     "drawer.config": "Configuration",
     "drawer.config.reply": "Reply",
