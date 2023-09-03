@@ -13,7 +13,7 @@ mongoose.connect(`mongodb://${env.MONGO_HOST}:${env.MONGO_PORT}/${env.MONGO_DB}`
 
 app.use(cors({ 
     credentials: true, 
-    origin: 'http://localhost:5173' 
+    origin: env.FRONTEND_URL
 }))
 
 app.use(bodyParser.urlencoded({extended: true}))

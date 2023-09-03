@@ -5,8 +5,7 @@ import guest from '../middlewares/guest';
 
 const router = express.Router();
 
-
-router.post('/register', guest, async (req: Request, res: Response) => {
+router.put('/register', guest, async (req: Request, res: Response) => {
     try {
         const { username, email, password } = req.body
 
@@ -27,23 +26,30 @@ router.post('/login', guest, async (req: Request, res: Response) => {
         if (!user) return res.sendStatus(401);
 
         req.session.auth = user
-        res.json({ auth: user });
+        res.json({
+            auth: {
+                ...user,
+                ...{
+                    password: undefined
+                }
+            }
+        });
     } catch (error) {
         res.sendStatus(500).json({ error })
     }
 })
 
-router.get('/logout', auth, async (req : Request, res : Response) => {
+router.get('/logout', auth, async (req: Request, res: Response) => {
     try {
         req.session.destroy(() => res.sendStatus(200))
     } catch (error) {
-        res.sendStatus(500).json({error})
+        res.sendStatus(500).json({ error })
     }
 })
 
-router.get('/user', auth,  async (req : Request, res : Response) => {
+router.get('/user', auth, async (req: Request, res: Response) => {
     const auth = req.session.auth;
-    res.json({auth})
+    res.json({ auth })
 })
 
 export default router;
