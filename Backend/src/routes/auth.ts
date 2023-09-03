@@ -5,19 +5,6 @@ import guest from '../middlewares/guest';
 
 const router = express.Router();
 
-router.put('/register', guest, async (req: Request, res: Response) => {
-    try {
-        const { username, email, password } = req.body
-
-        const newUser = new User({ username, email, password });
-        await newUser.save();
-
-        res.sendStatus(200);
-    } catch (error) {
-        res.sendStatus(500).json({ error })
-    }
-})
-
 router.post('/login', guest, async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body
