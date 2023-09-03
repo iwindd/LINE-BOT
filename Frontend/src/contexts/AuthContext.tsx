@@ -19,16 +19,20 @@ interface AuthContext {
     auth: Auth | null,
     refetch: QueryFunction,
     isLoading: boolean,
+    isLogged: boolean,
+    isLoadingUserData: boolean,
     methods: {
         Register: UseMutateFunction<AxiosResponse<any, any>, unknown, User, unknown>,
         Login: UseMutateFunction<AxiosResponse<any, any>, unknown, { email : string, password: string}, unknown>,
-        Logout: UseMutateFunction<AxiosResponse<any, any>, unknown, void, unknown>
+        Logout: UseMutateFunction<void, unknown, void, unknown>
     }
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [auth, setAuth] = React.useState<Auth | null>(null);
-    const { refetch, data } = useQuery("LoadUserData", async () => {
+    const [isLogged, setLogin] = React.useState<boolean>(false);
+    
+    const { refetch, data, isLoading : isLoadingUserData } = useQuery("LoadUserData", async () => {
         return await axios.get("/auth/user")
     })
 
@@ -41,13 +45,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })
 
     const { mutate: Logout, isLoading: isLogout } = useMutation(async () => {
-        return await axios.get("/auth/logout")
+        return await axios.get("/auth/logout").then(() => {
+            setAuth(null);
+            setLogin(false);
+        })
     })
 
     useEffect(() => {
         if (data?.data) {
             const { email, username, _id } = data.data as Auth
             setAuth({ email, username, _id })
+            setLogin(true)
         }
     }, [data])
 
@@ -56,6 +64,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             value={{
                 auth,
                 refetch,
+                isLogged,
+                isLoadingUserData,
                 isLoading: isRegister || isLogin || isLogout,
                 methods: { Register, Login, Logout }
             }}
