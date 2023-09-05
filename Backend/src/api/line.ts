@@ -4,6 +4,7 @@ import { Client, WebhookEvent, TextMessage } from '@line/bot-sdk'
 import { ConfigReturn } from '../typings/config';
 import { isRunning } from './main';
 import { App } from '../typings/app';
+import { Logger } from '../controllers/LogController';
 
 const apps: App[] = [];
 
@@ -43,12 +44,13 @@ export const ensure = async (id: string): Promise<[boolean, number]> => {
     return [true, 200]
 }
 
-export const onEvent = (event: WebhookEvent) => {
+export const onEvent = (event: WebhookEvent, app : string) => {
     switch (event.type) {
         case "message":
             if (event.message.type != "text") return console.error(`NOT SUPPORT MESSAGE TYPE : ${event.message.type}`);
             const message: TextMessage = event.message
-
+            Logger(app, event);
+            
             console.log(`MESSAGE >> ${message.text}`);
             break;
         default:

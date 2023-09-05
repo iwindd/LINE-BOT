@@ -30,7 +30,6 @@ export const LoadConfig = async (synthia: string, key: ConfigKey | ConfigKey[]) 
     }
 };
 
-
 export const SetConfig = async (synthia: string, data: ConfigReturn | ConfigReturn[]) => {
     const setValue = async (key: ConfigKey, value: any) => {
         const config = await Config.findOne({

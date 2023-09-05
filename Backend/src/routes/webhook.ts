@@ -15,7 +15,7 @@ Route.post("/line/:id", async (req: Request, res: Response) => {
 
         return events.length > 0 ? (
             await (events.map((event: WebhookEvent) => {
-                onEvent(event)
+                onEvent(event, id)
             }))
         ) : (
             res.sendStatus(200)

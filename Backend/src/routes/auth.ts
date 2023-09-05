@@ -4,23 +4,6 @@ import auth from '../middlewares/auth';
 import guest from '../middlewares/guest';
 const router = express.Router();
 
-/* DEBUG */
-router.post('/add', async (req : Request, res: Response) => {
-    try{
-        const { 
-            email,
-            username,
-            password,
-            type
-        } = req.body
-
-        await App.create({email, username, password, type})
-        res.sendStatus(200)
-    } catch(error){
-        res.sendStatus(500).json({error})
-    }
-})
-
 router.post('/login', guest, async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body
