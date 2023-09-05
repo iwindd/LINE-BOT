@@ -35,7 +35,7 @@ Route.post("/state/change", async (req: Request, res: Response) => {
 
     const { state } = req.body
     const [status, code] = state ? (
-        await ensure("LINE", req.session.auth)
+        await ensure(req.session.auth)
     ) : (
         await stop(req.session.auth)
     );

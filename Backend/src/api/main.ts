@@ -1,11 +1,11 @@
 import { ensure as LineEnsure, stop as LineStop } from "./line"
-
+import { ApiType } from "../typings/app";
+import AppModel from "../models/AppModel";
 const apps: App[] = [];
 
-type Network = "LINE"
 interface App {
     id: string,
-    network: Network
+    network: ApiType
 }
 
 export const isRunning = (id: string) => {
@@ -27,7 +27,16 @@ export const stop = async (id: string) => {
     }
 }
 
-export const ensure = async (network: Network, id: string) => {
+export const ensure = async (id: string, network?: ApiType) => {
+    if (!network) {
+        const app = await AppModel.findById(id)
+        if (app) network = app.api
+    }
+
+    if (!network) {
+        throw new Error("not found api");
+    }
+
     switch (network) {
         case "LINE":
             const [status, code] = await LineEnsure(id);
@@ -37,4 +46,13 @@ export const ensure = async (network: Network, id: string) => {
         default:
             throw new Error(`NOT FOUND NETWORK : ${network}`);
     }
+}
+
+export const ensureAll = async () => {
+    AppModel.find({})
+        .then((data) => {
+            data.map((data) => {
+                ensure(data._id, data.api)
+            })
+        })
 }
