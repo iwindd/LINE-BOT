@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
-import { onEvent, isRunning } from '../api/line';
+import { onEvent } from '../api/line';
 import { WebhookEvent } from '@line/bot-sdk'
+import { isRunning } from '../api/main';
 
 const Route = express.Router();
 

@@ -6,7 +6,10 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { AppBar } from '../components/3rd-party/navbar';
 import { DrawerItems } from '../components/config/navbar';
 import { useNavigate } from 'react-router-dom';
+
+/* COMPONENTS */
 import Logout from './logout';
+import Server from './server';
 
 export const OutletNavbar = () => {
     return (
@@ -34,7 +37,8 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
                             {isDrawer ? (<KeyboardArrowLeft />) : (<KeyboardArrowRight />)}
                         </IconButton>
                     </Box>
-                    <Box>
+                    <Box className="flex gap-2">
+                        <Server/>
                         <Logout/>
                     </Box>
                 </Toolbar>

@@ -1,17 +1,23 @@
 import AppModel, { IApp } from '../models/AppModel';
 import { LoadConfig } from '../controllers/ConfigController';
 import { Client, WebhookEvent, TextMessage } from '@line/bot-sdk'
-import { App } from '../typings/app';
 import { ConfigReturn } from '../typings/config';
+import { isRunning } from './main';
+import { App } from '../typings/app';
 
 const apps: App[] = [];
 
-export const isRunning = (id: string) => {
-    return apps.find(app => app.id == id) ? true : false
+export const stop = async (id: string): Promise<[boolean, number]> => {
+    if (!apps.find(app => app.id == id)) return [false, 1]
+    
+    const index: number = apps.findIndex(app => app.id == id);
+    apps.splice(index, 1)
+
+    return [true, 200]
 }
 
 export const ensure = async (id: string): Promise<[boolean, number]> => {
-    if (apps.find(app => app.id == id)) return [false, 1]
+    if (isRunning(id)) return [false, 1]
 
     const config: ConfigReturn[] = await LoadConfig(id, ['channel_access_token', 'channel_secret']) as ConfigReturn[];
     if (!config) return [false, 2];

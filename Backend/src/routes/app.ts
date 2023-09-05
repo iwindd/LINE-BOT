@@ -1,9 +1,10 @@
 import express, { Request, Response } from 'express'
 import { LoadConfig, SetConfig } from '../controllers/ConfigController';
 import { ConfigKey, ConfigReturn } from '../typings/config';
-import ensure from '../api/main';
+import { ensure, stop, isRunning } from '../api/main';
 const Route = express.Router()
 
+/* CONFIG */
 Route.post("/config/set", async (req: Request, res: Response) => {
     if (!req.session.auth) return res.sendStatus(403)
 
@@ -18,14 +19,29 @@ Route.get("/config/get", async (req: Request, res: Response) => {
     res.send(config).status(200);
 });
 
-Route.post("/start", async (req: Request, res: Response) => {
-    if (!req.session.auth) return res.sendStatus(403);
 
-    const [status, code] = await ensure("LINE", req.session.auth)
+/* STATE */
+Route.get("/state/get", async (req: Request, res: Response) => {
+    if (!req.session.auth) return res.sendStatus(403)
+
+    const auth: string = req.session.auth
+    const state: boolean = isRunning(auth)
+
+    res.status(200).json({ state })
+})
+
+Route.post("/state/change", async (req: Request, res: Response) => {
+    if (!req.session.auth) return res.sendStatus(403)
+
+    const { state } = req.body
+    const [status, code] = state ? (
+        await ensure("LINE", req.session.auth)
+    ) : (
+        await stop(req.session.auth)
+    );
+
     if (!status) {
-        console.log('error', code);
-        
-        res.sendStatus(400).json({code})
+        return res.status(400).json({ code, state })
     }
 
     res.sendStatus(200)
