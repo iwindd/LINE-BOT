@@ -1,16 +1,18 @@
-import AppModel, { IApp } from '../models/AppModel';
-import { LoadConfig } from '../controllers/ConfigController';
+import AppModel, { IApp } from '../../models/AppModel';
+import { LoadConfig } from '../../controllers/ConfigController';
 import { Client, WebhookEvent, TextMessage } from '@line/bot-sdk'
-import { ConfigReturn } from '../typings/config';
-import { isRunning } from './main';
-import { App } from '../typings/app';
-import { Logger } from '../controllers/LogController';
+import { ConfigReturn } from '../../typings/config';
+import { isRunning } from '../main';
+import { App } from '../../typings/app';
+import { Logger } from '../../controllers/LogController';
+import { Reply } from '../../controllers/ReplyController';
+import { LineApp } from './classes/line';
 
 const apps: App[] = [];
 
 export const stop = async (id: string): Promise<[boolean, number]> => {
     if (!apps.find(app => app.id == id)) return [false, 1]
-    
+
     const index: number = apps.findIndex(app => app.id == id);
     apps.splice(index, 1)
 
@@ -35,7 +37,8 @@ export const ensure = async (id: string): Promise<[boolean, number]> => {
     apps.push({
         id: data._id,
         type: data.type,
-        client: new Client({
+
+        app: new LineApp(id, {
             channelSecret: channel_secret,
             channelAccessToken: channel_access_token
         })
@@ -44,14 +47,20 @@ export const ensure = async (id: string): Promise<[boolean, number]> => {
     return [true, 200]
 }
 
-export const onEvent = (event: WebhookEvent, app : string) => {
+export const onEvent = (event: WebhookEvent, id: string) => {
+    const app = (apps.find((app) => app.id == id) as App).app
+
     switch (event.type) {
         case "message":
-            if (event.message.type != "text") return console.error(`NOT SUPPORT MESSAGE TYPE : ${event.message.type}`);
+            if (event.message.type != "text") {
+                return console.error(`NOT SUPPORT MESSAGE TYPE : ${event.message.type}`)
+            };
+
             const message: TextMessage = event.message
-            Logger(app, event);
-            
-            console.log(`MESSAGE >> ${message.text}`);
+            Logger(app.id, event);
+           
+            app.reply.apply(event, message.text)
+
             break;
         default:
             console.error(`NOT SUPPORT : ${event.type}`);
