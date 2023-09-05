@@ -8,7 +8,8 @@ const Route = express.Router();
 Route.post("/line/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    if (!isRunning(id)) return res.status(500).end();
+    if (!id) return res.sendStatus(500);
+    if (!isRunning(id)) return res.sendStatus(500);
 
     try {
         const events = req.body.events;
