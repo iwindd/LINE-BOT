@@ -1,9 +1,10 @@
+import { Message } from "@line/bot-sdk";
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IReply extends Document {
     app: string,
     command: string,
-    reply: string
+    reply: Message | Message[]
 }
 
 const UserSchema: Schema = new Schema({

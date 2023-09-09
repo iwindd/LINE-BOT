@@ -4,7 +4,7 @@ import { Reply } from "../../../controllers/ReplyController";
 export class LineApp {
     public id: string;
     public client: Client;
-    public reply : Reply
+    public reply : Reply;
 
     constructor(id: string, config: ClientConfig) {
         this.id = id;

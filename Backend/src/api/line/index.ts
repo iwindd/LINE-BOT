@@ -60,7 +60,6 @@ export const onEvent = (event: WebhookEvent, id: string) => {
             Logger(app.id, event);
            
             app.reply.apply(event, message.text)
-
             break;
         default:
             console.error(`NOT SUPPORT : ${event.type}`);
