@@ -1,5 +1,5 @@
 import { Client, ReplyableEvent } from "@line/bot-sdk";
-import ReplyModel, { IReply } from "../models/ReplyModel";
+import ReplyModel, { IReply } from "../../../models/ReplyModel";
 
 export class Reply {
     public replies: IReply[] = [];
@@ -26,10 +26,10 @@ export class Reply {
     public apply(event: ReplyableEvent, msg: string) {
         const replyMsg = this.hasReply(msg)?.reply;
 
-        if (!replyMsg) return false;
-        if (!event?.replyToken) return false;
+        if (!replyMsg) return;
+        if (!event?.replyToken) return;
 
         this.client.replyMessage(event.replyToken, JSON.parse(replyMsg as any))
-            .catch((e) => console.log("ERROR CANNOT REPLY", e)) 
+            .catch((e) => console.log("ERROR CANNOT REPLY", e))
     }
 }

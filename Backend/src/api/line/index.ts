@@ -1,12 +1,11 @@
 import AppModel, { IApp } from '../../models/AppModel';
 import { LoadConfig } from '../../controllers/ConfigController';
-import { Client, WebhookEvent, TextMessage } from '@line/bot-sdk'
+import { WebhookEvent } from '@line/bot-sdk'
 import { ConfigReturn } from '../../typings/config';
 import { isRunning } from '../main';
 import { App } from '../../typings/app';
 import { Logger } from '../../controllers/LogController';
-import { Reply } from '../../controllers/ReplyController';
-import { LineApp } from './classes/line';
+import { LineApp } from './app';
 
 const apps: App[] = [];
 
@@ -47,8 +46,9 @@ export const ensure = async (id: string): Promise<[boolean, number]> => {
     return [true, 200]
 }
 
-export const onEvent = (event: WebhookEvent, id: string) => {
+export const onEvent = async (event: WebhookEvent, id: string) => {
     const app = (apps.find((app) => app.id == id) as App).app
+    const user = await app.getUser(event.source.userId || "");
 
     switch (event.type) {
         case "message":
@@ -56,10 +56,8 @@ export const onEvent = (event: WebhookEvent, id: string) => {
                 return console.error(`NOT SUPPORT MESSAGE TYPE : ${event.message.type}`)
             };
 
-            const message: TextMessage = event.message
             Logger(app.id, event);
-           
-            app.reply.apply(event, message.text)
+            app.message(event, event.message.text)
             break;
         default:
             console.error(`NOT SUPPORT : ${event.type}`);

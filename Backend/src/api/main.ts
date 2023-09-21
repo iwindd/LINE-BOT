@@ -1,6 +1,11 @@
 import { ensure as LineEnsure, stop as LineStop } from "./line"
 import { ApiType } from "../typings/app";
 import AppModel from "../models/AppModel";
+import { init as LINE_COMMAND_INIT } from "./line/command";
+
+/* INIT */
+LINE_COMMAND_INIT();
+
 const apps: App[] = [];
 
 interface App {

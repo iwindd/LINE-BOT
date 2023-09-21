@@ -1,4 +1,4 @@
-import { LineApp } from "../api/line/classes/line"
+import { LineApp } from "../api/line/app"
 
 export type ApiType = "LINE"
 export type AppType = "Hotel"
@@ -7,3 +7,4 @@ export interface App {
     type: AppType,
     app: LineApp
 }
+
