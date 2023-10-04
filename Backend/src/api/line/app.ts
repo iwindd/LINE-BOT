@@ -1,57 +1,43 @@
 import { Client, ClientConfig, ReplyableEvent } from "@line/bot-sdk";
 import { Reply } from "./controllers/ReplyController";
-import UserModel, { IUser } from "../../models/UserModel";
-import { CutMessage } from "../lib";
+import { CutMessage } from "../lib/lib";
 import { isCommand } from "./command";
-import { Args } from "./command/typings";
+import UserModel, { IUser } from "../../models/UserModel";
+import { LineUser, getUser } from "../lib/user";
 
 export class LineApp {
     public id: string;
     public client: Client;
     public reply: Reply;
-    public users: IUser[];
+    public _users: IUser[];
+    public users: LineUser[] = [];
 
     constructor(id: string, config: ClientConfig) {
         this.id = id;
         this.client = new Client(config); // Create a client instance with your tokens
         this.reply = new Reply(id, this.client);
-        this.users = [];
+        this._users = [];
     }
 
     /**
      * message 
      */
-    public message(event: ReplyableEvent, message: string): void {
+    public async message(event: ReplyableEvent, message: string) {
         const [header, args] = CutMessage(message);
         const command = isCommand(header);
+        const user = await getUser(event.source.userId as string, this) as LineUser;
+        this.use(user as LineUser)
 
         return command ? (
-            command.execute(this, event, args as any)
+            command.execute(this, event, user, args as any)
         ) : (
             this.reply.apply(event, header)
         );
     }
 
-    /**
-     * getUser
-    */
-    public async getUser(userId: string) {
-        if (!userId) return;
-
-        const index = this.users.find((user) => user.userId == userId);
-        const user: IUser | null = index || await UserModel.findOne({ userId });
-
-        if (!index && user) {
-            this.users.push(user)
-        } else if (!index && !user) {
-            const { displayName } = await this.client.getProfile(userId);
-
-            return await UserModel.create({
-                userId,
-                appId: this.id,
-                title: displayName
-            });
+    private use(user: LineUser) {
+        if (!this.users.find((user) => user.userId)) {
+            return this.users.push(user);
         }
-        return user
     }
 }

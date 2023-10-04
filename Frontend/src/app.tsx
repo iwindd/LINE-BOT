@@ -18,6 +18,7 @@ import SignIn from './pages/auth/signin';
 import Dashboard from './pages/dashboard';
 import Reply from './pages/reply';
 import Synthia from './pages/synthia/synthia';
+import Rooms from './pages/rooms/';
 
 function App() {
     const queryClient = new QueryClient();
@@ -34,7 +35,8 @@ function App() {
                                 <Route index element={<Dashboard />} />
                                 <Route path='/users' element={<Dashboard />} />
                                 <Route path='/reply' element={<Reply />} />
-                                <Route path='/synthia' element={<Synthia/>} />
+                                <Route path='/synthia' element={<Synthia />} />
+                                <Route path='/rooms' element={<Rooms />} />
                                 <Route path='/*' element={<Error />}></Route>
                             </Route>
                         </Route>

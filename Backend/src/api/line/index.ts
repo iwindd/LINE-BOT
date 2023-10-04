@@ -36,7 +36,6 @@ export const ensure = async (id: string): Promise<[boolean, number]> => {
     apps.push({
         id: data._id,
         type: data.type,
-
         app: new LineApp(id, {
             channelSecret: channel_secret,
             channelAccessToken: channel_access_token
@@ -48,7 +47,6 @@ export const ensure = async (id: string): Promise<[boolean, number]> => {
 
 export const onEvent = async (event: WebhookEvent, id: string) => {
     const app = (apps.find((app) => app.id == id) as App).app
-    const user = await app.getUser(event.source.userId || "");
 
     switch (event.type) {
         case "message":
