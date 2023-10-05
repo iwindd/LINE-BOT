@@ -4,8 +4,10 @@ import { WebhookEvent } from '@line/bot-sdk'
 import { ConfigReturn } from '../../typings/config';
 import { isRunning } from '../main';
 import { App } from '../../typings/app';
-import { Logger } from '../../controllers/LogController';
+import * as Logger from '../../controllers/LogController';
 import { LineApp } from './app';
+import { onContext } from './command';
+import { Context } from '../lib/typings';
 
 const apps: App[] = [];
 
@@ -54,8 +56,14 @@ export const onEvent = async (event: WebhookEvent, id: string) => {
                 return console.error(`NOT SUPPORT MESSAGE TYPE : ${event.message.type}`)
             };
 
-            Logger(app.id, event);
             app.message(event, event.message.text)
+            Logger.msg(app.id, event);
+            break;
+        case "postback":
+            const payload = JSON.parse(event.postback.data);
+
+            app.context(event, payload)
+            Logger.context(app.id, event);
             break;
         default:
             console.error(`NOT SUPPORT : ${event.type}`);

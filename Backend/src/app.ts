@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import express from 'express';
 import env from './components/dotenv';
 import bodyParser from 'body-parser';
+import path from 'path';
+
 /* COMPONENTS */
 import session from './components/session';
 import cors from './components/cors';
@@ -24,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(session)
 app.use(cors)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => res.send("Hello Synthia"))
 app.use('/auth', Auth)

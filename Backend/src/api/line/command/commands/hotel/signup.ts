@@ -1,5 +1,5 @@
 import { CommandRegis } from '../..';
-import aliases from '../../aliases/signup.json';
+import aliases from '../../aliases/hotel/signup.json';
 
 export interface Signup {
     [0]: string; // name

@@ -7,3 +7,13 @@ export const CutMessage = (message: String): [string, string[]] => {
 
     return [commandName, cleanedArgs];
 }
+
+export const useContext = (commandName : string, ...args : any) => {
+    const parts = commandName.split('.');
+
+    return JSON.stringify({
+        commandName: parts[0],
+        contextName: parts[1],
+        args: args
+    })
+}

@@ -66,4 +66,11 @@ export class LineUser {
         return UserModel.findByIdAndUpdate(this.data._id, data, options)
     }
 
+    /**
+     * StateFor
+     */
+    public StateFor(states : number[]) {
+        return states.find(state => state == this.data.state)
+    }
+
 }

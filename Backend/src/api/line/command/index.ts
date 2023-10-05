@@ -2,7 +2,7 @@ import { ReplyableEvent, Message } from "@line/bot-sdk";
 import { LineApp } from "../app";
 import { CommandCallback } from "./typings";
 import { LineUser } from "../../lib/user";
-import { Command } from "./command";
+import { Command, ContextCallback } from "./command";
 import fs from "fs";
 import path from "path";
 import { dialogue } from "../../lib/typings";
@@ -13,23 +13,31 @@ export interface CommandBase {
     App: LineApp,
     Event: ReplyableEvent,
     User: LineUser,
+    Command: Command,
     Reply: (msg: Message | Message[]) => void,
     ReplyText: (msg: string) => void,
 }
 
-export interface CommandRegis{
+export interface CommandRegis {
     name: string,
     dialogue: dialogue,
-    aliases : string[],
+    aliases: string[],
     description: string,
-    callback: CommandCallback
+    callback: CommandCallback,
+    contexts: {name: string, cb: ContextCallback}[]
 }
 
-const Add = (command : CommandRegis) => {
-    return commands.push(new Command(command.name, command.callback, command.aliases || [], command.dialogue, command.description))
+const Add = (payload: CommandRegis) => {
+    const command = new Command(payload.name, payload.callback, payload.aliases || [], payload.dialogue, payload.description);
+
+    if (payload.contexts && payload.contexts.length > 0) {
+        payload.contexts.map((context) => command.RegisterContext(context.name, context.cb))
+    }
+
+    return commands.push(command)
 }
 
-const loadCommandsFromDirectory = (directoryPath : string) => {
+const loadCommandsFromDirectory = (directoryPath: string) => {
     fs.readdirSync(directoryPath).forEach((file) => {
         const filePath = path.join(directoryPath, file);
 
@@ -45,8 +53,14 @@ const loadCommandsFromDirectory = (directoryPath : string) => {
     });
 }
 
-export const isCommand = (aliases: string) : Command | undefined => {
+export const isCommand = (aliases: string): Command | undefined => {
     return commands.find(c => c.aliases.includes(aliases))
+}
+
+export const onContext = (CommandName: string, App: LineApp, Event: ReplyableEvent, User: LineUser, ContextName: string, Args: string) => {
+    const command = commands.find(c => c.name == CommandName);
+
+    return command ? command.useContext(App, Event, User, ContextName, Args) : false
 }
 
 export const init = () => {

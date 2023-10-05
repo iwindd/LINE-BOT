@@ -3,7 +3,7 @@ import instance from 'axios';
 export const url = import.meta.env.VITE_BACKEND_URL
 
 const axios = instance.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "http://localhost:3001",
     withCredentials: true
 });
 
