@@ -32,8 +32,6 @@ export class Command {
      * RegisterContext
      */
     public RegisterContext(name: string, cb: ContextCallback) {
-        console.log('push Context', name);
-        
         this.contexts.push({
             name: name,
             cb: cb
@@ -44,8 +42,6 @@ export class Command {
      * useContext
      */
     public useContext(App: LineApp, Event: ReplyableEvent, User: LineUser, name: string, ...args: any) {
-        console.log('useContext', this.name, name, this.contexts);
-
         return this.contexts.find(c => c.name === name) ? (
             this.contexts.find(c => c.name === name)?.cb(
                 {
