@@ -1,6 +1,6 @@
 import AppModel, { IApp } from '../../models/AppModel';
 import { LoadConfig } from '../../controllers/ConfigController';
-import { WebhookEvent } from '@line/bot-sdk'
+import { DateTimePostback, Postback, WebhookEvent } from '@line/bot-sdk'
 import { ConfigReturn } from '../../typings/config';
 import { isRunning } from '../main';
 import { App } from '../../typings/app';
@@ -8,6 +8,7 @@ import * as Logger from '../../controllers/LogController';
 import { LineApp } from './app';
 import { onContext } from './command';
 import { Context } from '../lib/typings';
+import { isThaiNumber, thaiToArabicNumbers } from '../lib/lib';
 
 const apps: App[] = [];
 
@@ -60,7 +61,19 @@ export const onEvent = async (event: WebhookEvent, id: string) => {
             Logger.msg(app.id, event);
             break;
         case "postback":
-            const payload = JSON.parse(event.postback.data);
+            const postback = event.postback as Postback
+            const payload = JSON.parse(postback.data);
+            const params = postback.params as DateTimePostback;
+
+            if (params) {
+                if (params.date && isThaiNumber(params.date)) params.date = thaiToArabicNumbers(params.date) as string;
+                if (params.time && isThaiNumber(params.time)) params.time = thaiToArabicNumbers(params.time) as string;
+                if (params.datetime && isThaiNumber(params.datetime)) params.datetime = thaiToArabicNumbers(params.datetime) as string;
+
+                if (params.date) payload.args.push(params.date);
+                if (params.time) payload.args.push(params.time);
+                if (params.datetime) payload.args.push(params.datetime);
+            }
 
             app.context(event, payload)
             Logger.context(app.id, event);

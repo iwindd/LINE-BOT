@@ -38,39 +38,11 @@ export class Command {
         })
     }
 
-    /**
-     * useContext
-     */
-    public useContext(App: LineApp, Event: ReplyableEvent, User: LineUser, name: string, ...args: any) {
-        return this.contexts.find(c => c.name === name) ? (
-            this.contexts.find(c => c.name === name)?.cb(
-                {
-                    App,
-                    Event,
-                    User,
-                    Command: this,
-                    Reply: (payload: Message | Message[]) => {
-                        App.client.replyMessage(Event.replyToken, payload);
-                    },
-                    ReplyText: (message: string) => {
-                        App.client.replyMessage(Event.replyToken, {
-                            type: "text",
-                            text: message
-                        })
-                    },
-                },
-                ...args
-            )
-        ) : (false);
-    }
-
-    public execute(App: LineApp, Event: ReplyableEvent, User: LineUser, args: Args) {
-        User.useDialogue(this.dialogue);
-
-        return this.callback({
-            App,
-            Event,
-            User,
+    private useBaseCommand(App: LineApp, Event: ReplyableEvent, User: LineUser): CommandBase {
+        return {
+            App: App,
+            Event: Event,
+            User: User,
             Command: this,
             Reply: (payload: Message | Message[]) => {
                 App.client.replyMessage(Event.replyToken, payload);
@@ -80,7 +52,31 @@ export class Command {
                     type: "text",
                     text: message
                 })
-            }
-        }, args);
+            },
+        }
+    }
+
+    /**
+     * useContext
+     */
+    public useContext(App: LineApp, Event: ReplyableEvent, User: LineUser, name: string, ...args: any) {
+        if (!name){
+            this.execute(App, Event, User, args[0]);
+
+            return
+        }
+
+        return this.contexts.find(c => c.name === name) ? (
+            this.contexts.find(c => c.name === name)?.cb(
+                this.useBaseCommand(App, Event, User),
+                ...args
+            )
+        ) : (false);
+    }
+
+    public execute(App: LineApp, Event: ReplyableEvent, User: LineUser, args: Args) {
+        User.useDialogue(this.dialogue);
+
+        return this.callback(this.useBaseCommand(App, Event, User), args);
     }
 }

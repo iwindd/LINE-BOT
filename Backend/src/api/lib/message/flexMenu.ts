@@ -1,4 +1,4 @@
-import { Message } from "@line/bot-sdk"
+import { Action, Message, Postback } from "@line/bot-sdk"
 
 type style = "list" | "button" | "confirmation"
 type align = "start" | "center" | "end"
@@ -20,8 +20,8 @@ interface metadata {
     confirmLabel?: string,
     cancelLabel?: string,
 
-    confirm?: Object,
-    cancel?: Object
+    confirm?: Action,
+    cancel?: Action
 }
 
 interface item {

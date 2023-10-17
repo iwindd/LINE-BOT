@@ -1,6 +1,6 @@
 export type dialogue = "registration" 
-    |"getRooms"
-
+    | "getRooms"
+    | "booking"
 
 export interface Context {
     commandName : string,
